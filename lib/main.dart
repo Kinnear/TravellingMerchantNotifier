@@ -31,6 +31,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<STOCK_ITEM> dayStockItems = [];
 
+  List<List<STOCK_ITEM>> futureStockItems = [];
+
   @override
   void initState() {
     super.initState();
@@ -82,17 +84,43 @@ class _MyHomePageState extends State<MyHomePage> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Today\'s:',
-                      ),
-                      Text(
-                        dayStockItems[0].text,
-                      ),
-                      Text(
-                        dayStockItems[1].text,
-                      ),
-                      Text(
-                        dayStockItems[2].text,
+                      Expanded(
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: DataTable(
+                            columnSpacing: 10.0,
+                            columns: [
+                              DataColumn(label: Text("Date")),
+                              DataColumn(label: Text("Slot A")),
+                              DataColumn(label: Text("Slot B")),
+                              DataColumn(label: Text("Slot C")),
+                            ],
+                            rows: [
+                              DataRow(cells: [
+                                DataCell(Text('Today:')),
+                                DataCell(
+                                  Text(
+                                    // dayStockItems[0].text,
+                                    dayStockItems[0].text,
+                                    style: TextStyle(fontSize: 10.0),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    dayStockItems[1].text,
+                                    style: TextStyle(fontSize: 10.0),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(
+                                    dayStockItems[2].text,
+                                    style: TextStyle(fontSize: 10.0),
+                                  ),
+                                ),
+                              ]),
+                            ],
+                          ),
+                        ),
                       ),
                       // Image.asset('assets/images/stock_items/barrel_of_bait.png'),
                     ],
