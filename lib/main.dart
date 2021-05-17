@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:travellingmerchantnotifier/data%20_classes/data_classes.dart';
 
 void main() {
@@ -29,26 +30,60 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<STOCK_ITEM> dayStockItems = [];
-
   List<List<STOCK_ITEM>> futureStockItems = [];
 
   @override
   void initState() {
     super.initState();
 
-    DayStock stockForToday = new DayStock();
-    dayStockItems = stockForToday.calculatedDayStock(
-      DateTime.now().add(
-        const Duration(
-          days: 1,
-        ),
-      ),
-    );
+    futureStockItems.clear();
+
+    for (int i = 0; i < 7; i++) {
+      DayStock futureDayStock = new DayStock();
+      futureStockItems.add(
+        futureDayStock
+            .calculatedDayStock(DateTime.now().add(Duration(days: i))),
+      );
+    }
   }
 
-  void _incrementCounter() {
-    setState(() {});
+  // void _incrementCounter() {
+  //   setState(() {});
+  // }
+  //
+  String dateDisplay(int daysInTheFuture) {
+    return DateFormat('EEE, MMM d')
+        .format(DateTime.now().add(Duration(days: daysInTheFuture)));
+  }
+
+  List<DataRow> buildDatatable() {
+    return [
+      for (int i = 0; i < futureStockItems.length; i++) ...[
+        DataRow(
+          cells: [
+            DataCell(Text(i == 0 ? 'Today:' : dateDisplay(i))),
+            DataCell(
+              Text(
+                futureStockItems[i][0].text,
+                style: TextStyle(fontSize: 10.0),
+              ),
+            ),
+            DataCell(
+              Text(
+                futureStockItems[i][1].text,
+                style: TextStyle(fontSize: 10.0),
+              ),
+            ),
+            DataCell(
+              Text(
+                futureStockItems[i][2].text,
+                style: TextStyle(fontSize: 10.0),
+              ),
+            ),
+          ],
+        ),
+      ],
+    ];
   }
 
   @override
@@ -95,30 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               DataColumn(label: Text("Slot B")),
                               DataColumn(label: Text("Slot C")),
                             ],
-                            rows: [
-                              DataRow(cells: [
-                                DataCell(Text('Today:')),
-                                DataCell(
-                                  Text(
-                                    // dayStockItems[0].text,
-                                    dayStockItems[0].text,
-                                    style: TextStyle(fontSize: 10.0),
-                                  ),
-                                ),
-                                DataCell(
-                                  Text(
-                                    dayStockItems[1].text,
-                                    style: TextStyle(fontSize: 10.0),
-                                  ),
-                                ),
-                                DataCell(
-                                  Text(
-                                    dayStockItems[2].text,
-                                    style: TextStyle(fontSize: 10.0),
-                                  ),
-                                ),
-                              ]),
-                            ],
+                            rows: buildDatatable(),
                           ),
                         ),
                       ),

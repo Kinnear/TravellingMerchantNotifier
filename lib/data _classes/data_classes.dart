@@ -758,16 +758,16 @@ enum STOCK_ITEM {
 }
 
 extension STOCK_ITEM_Extension on STOCK_ITEM {
-  String get imageURL {
-    switch (this) {
-      case STOCK_ITEM.BARREL_OF_BAIT:
-        return "barrel_of_bait";
-      case STOCK_ITEM.TANGLED_FISHBOWL:
-        return "";
-      default:
-        return null;
-    }
-  }
+  // String get imageURL {
+  //   switch (this) {
+  //     case STOCK_ITEM.BARREL_OF_BAIT:
+  //       return "barrel_of_bait";
+  //     case STOCK_ITEM.TANGLED_FISHBOWL:
+  //       return "";
+  //     default:
+  //       return null;
+  //   }
+  // }
 
   String get text {
     switch (this) {
