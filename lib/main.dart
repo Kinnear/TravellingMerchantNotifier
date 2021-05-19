@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:travellingmerchantnotifier/data%20_classes/data_classes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(MyApp());
@@ -51,13 +52,26 @@ class _MyHomePageState extends State<MyHomePage> {
     userSelectedStocksToNotify.clear();
 
     // load user selected stocks here
-    //
+    loadSelectedList();
   }
 
-  // void _incrementCounter() {
-  //   setState(() {});
-  // }
-  //
+  loadSelectedList() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> notifyOnStockList =
+        (prefs.getStringList('notifyOnStockList') ?? []);
+
+    userSelectedStocksToNotify =
+        notifyOnStockList.map((e) => int.parse(e)).toList();
+  }
+
+  saveSelectedList() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> stringList =
+        userSelectedStocksToNotify.map((e) => e.toString()).toList();
+
+    await prefs.setStringList('notifyOnStockList', stringList);
+  }
+
   String dateDisplay(int daysInTheFuture) {
     return DateFormat('EEE, MMM d')
         .format(DateTime.now().add(Duration(days: daysInTheFuture)));
@@ -215,6 +229,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 } else {
                                   userSelectedStocksToNotify.add(index);
                                 }
+                                saveSelectedList();
                               });
 
                               print("Selected Indexes in list: " +
