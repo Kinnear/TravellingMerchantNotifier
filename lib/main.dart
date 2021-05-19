@@ -32,6 +32,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<List<STOCK_ITEM>> futureStockItems = [];
 
+  List<int> userSelectedStocksToNotify = [];
+
   @override
   void initState() {
     super.initState();
@@ -45,6 +47,11 @@ class _MyHomePageState extends State<MyHomePage> {
             .calculatedDayStock(DateTime.now().add(Duration(days: i))),
       );
     }
+
+    userSelectedStocksToNotify.clear();
+
+    // load user selected stocks here
+    //
   }
 
   // void _incrementCounter() {
@@ -60,24 +67,41 @@ class _MyHomePageState extends State<MyHomePage> {
     return [
       for (int i = 0; i < futureStockItems.length; i++) ...[
         DataRow(
+          color: i == 0
+              ? MaterialStateProperty.all(Colors.green)
+              : MaterialStateProperty.all(Colors.transparent),
           cells: [
-            DataCell(Text(i == 0 ? 'Today:' : dateDisplay(i))),
+            DataCell(Text(
+              i == 0 ? 'Today:' : dateDisplay(i),
+              style: TextStyle(
+                color: i == 0 ? Colors.white : Colors.black,
+              ),
+            )),
             DataCell(
               Text(
                 futureStockItems[i][0].text,
-                style: TextStyle(fontSize: 10.0),
+                style: TextStyle(
+                  fontSize: 10.0,
+                  color: i == 0 ? Colors.white : Colors.black,
+                ),
               ),
             ),
             DataCell(
               Text(
                 futureStockItems[i][1].text,
-                style: TextStyle(fontSize: 10.0),
+                style: TextStyle(
+                  fontSize: 10.0,
+                  color: i == 0 ? Colors.white : Colors.black,
+                ),
               ),
             ),
             DataCell(
               Text(
                 futureStockItems[i][2].text,
-                style: TextStyle(fontSize: 10.0),
+                style: TextStyle(
+                  fontSize: 10.0,
+                  color: i == 0 ? Colors.white : Colors.black,
+                ),
               ),
             ),
           ],
@@ -145,7 +169,65 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Center(
-              child: Container(),
+              child: Column(
+                children: [
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                    child: Row(
+                      children: [
+                        Text(
+                          "Select Stock to be notified on:",
+                          style: TextStyle(
+                            fontSize: 20.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Divider(),
+                  Scrollbar(
+                    child: SizedBox(
+                      height: 300.0,
+                      child: ListView.builder(
+                        physics: BouncingScrollPhysics(),
+                        itemCount: STOCK_ITEM.values.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            selected:
+                                userSelectedStocksToNotify.contains(index),
+                            selectedTileColor: Colors.green,
+                            title: Text(
+                              STOCK_ITEM.values[index].text,
+                              style: TextStyle(
+                                color:
+                                    userSelectedStocksToNotify.contains(index)
+                                        ? Colors.white
+                                        : Colors.black,
+                              ),
+                            ),
+                            onTap: () {
+                              setState(() {
+                                if (userSelectedStocksToNotify
+                                    .contains(index)) {
+                                  userSelectedStocksToNotify
+                                      .removeWhere((val) => val == index);
+                                } else {
+                                  userSelectedStocksToNotify.add(index);
+                                }
+                              });
+
+                              print("Selected Indexes in list: " +
+                                  userSelectedStocksToNotify.toString());
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  Divider(),
+                ],
+              ),
             ),
           ],
         ),
