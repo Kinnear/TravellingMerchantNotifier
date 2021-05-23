@@ -1,10 +1,73 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:travellingmerchantnotifier/data%20_classes/data_classes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+import 'package:travellingmerchantnotifier/settings_layouts/settings_layout.dart';
 
-void main() {
-  runApp(MyApp());
+class DataStore with ChangeNotifier, DiagnosticableTreeMixin {
+  DataStore(this._userSelectedStocksToNotify) {
+    _futureStockItems.clear();
+
+    // Calculate the stock items for the next 7 days
+    for (int i = 0; i < 7; i++) {
+      DayStock futureDayStock = new DayStock();
+      _futureStockItems.add(
+        futureDayStock
+            .calculatedDayStock(DateTime.now().add(Duration(days: i))),
+      );
+    }
+  }
+
+  List<List<STOCK_ITEM>> _futureStockItems = [];
+  List<int> _userSelectedStocksToNotify = [];
+
+  List<List<STOCK_ITEM>> get futureStockItems => _futureStockItems;
+  List<int> get userSelectedStocksToNotify => _userSelectedStocksToNotify;
+
+  // void increment() {
+  //   notifyListeners();
+  // }
+
+  void saveSelectedList(List<int> integerList) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> stringList = integerList.map((e) => e.toString()).toList();
+
+    await prefs.setStringList('notifyOnStockList', stringList);
+  }
+
+  /// Makes `DataStore` readable inside the devtools by listing all of its properties
+  // @override
+  // void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  //   super.debugFillProperties(properties);
+  //   properties.add(IntProperty('count', count));
+  // }
+}
+
+Future<List<int>> loadSelectedList() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  List<String> notifyOnStockList =
+      (prefs.getStringList('notifyOnStockList') ?? []);
+
+  // userSelectedStocksToNotify =
+  List<int> retrievedIntList =
+      notifyOnStockList.map((e) => int.parse(e)).toList();
+  return retrievedIntList;
+}
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  List<int> userSelectedStockList = await loadSelectedList();
+
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(
+        create: (_) => DataStore(userSelectedStockList),
+      )
+    ],
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -31,53 +94,28 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<List<STOCK_ITEM>> futureStockItems = [];
-
-  List<int> userSelectedStocksToNotify = [];
-
   @override
   void initState() {
     super.initState();
-
-    futureStockItems.clear();
-
-    for (int i = 0; i < 7; i++) {
-      DayStock futureDayStock = new DayStock();
-      futureStockItems.add(
-        futureDayStock
-            .calculatedDayStock(DateTime.now().add(Duration(days: i))),
-      );
-    }
-
-    userSelectedStocksToNotify.clear();
-
-    // load user selected stocks here
-    loadSelectedList();
   }
 
-  loadSelectedList() async {
+  Future<List<int>> loadSelectedList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> notifyOnStockList =
         (prefs.getStringList('notifyOnStockList') ?? []);
 
-    userSelectedStocksToNotify =
+    // userSelectedStocksToNotify =
+    List<int> retrievedIntList =
         notifyOnStockList.map((e) => int.parse(e)).toList();
-  }
-
-  saveSelectedList() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> stringList =
-        userSelectedStocksToNotify.map((e) => e.toString()).toList();
-
-    await prefs.setStringList('notifyOnStockList', stringList);
+    return retrievedIntList;
   }
 
   String dateDisplay(int daysInTheFuture) {
-    return DateFormat('EEE, MMM d')
+    return DateFormat('MMM d, EEE')
         .format(DateTime.now().add(Duration(days: daysInTheFuture)));
   }
 
-  List<DataRow> buildDatatable() {
+  List<DataRow> buildDatatable(List<List<STOCK_ITEM>> futureStockItems) {
     return [
       for (int i = 0; i < futureStockItems.length; i++) ...[
         DataRow(
@@ -126,6 +164,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final dataStore = context.read<DataStore>();
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -168,7 +208,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               DataColumn(label: Text("Slot B")),
                               DataColumn(label: Text("Slot C")),
                             ],
-                            rows: buildDatatable(),
+                            rows: buildDatatable(dataStore.futureStockItems),
                           ),
                         ),
                       ),
@@ -182,6 +222,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
+            // SettingsLayout(),
             Center(
               child: Column(
                 children: [
@@ -206,34 +247,38 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: ListView.builder(
                         physics: BouncingScrollPhysics(),
                         itemCount: STOCK_ITEM.values.length,
-                        itemBuilder: (context, index) {
+                        itemBuilder: (_, index) {
                           return ListTile(
-                            selected:
-                                userSelectedStocksToNotify.contains(index),
+                            selected: dataStore.userSelectedStocksToNotify
+                                .contains(index),
                             selectedTileColor: Colors.green,
                             title: Text(
                               STOCK_ITEM.values[index].text,
                               style: TextStyle(
-                                color:
-                                    userSelectedStocksToNotify.contains(index)
-                                        ? Colors.white
-                                        : Colors.black,
+                                color: dataStore.userSelectedStocksToNotify
+                                        .contains(index)
+                                    ? Colors.white
+                                    : Colors.black,
                               ),
                             ),
                             onTap: () {
                               setState(() {
-                                if (userSelectedStocksToNotify
+                                if (dataStore.userSelectedStocksToNotify
                                     .contains(index)) {
-                                  userSelectedStocksToNotify
+                                  dataStore.userSelectedStocksToNotify
                                       .removeWhere((val) => val == index);
                                 } else {
-                                  userSelectedStocksToNotify.add(index);
+                                  dataStore.userSelectedStocksToNotify
+                                      .add(index);
                                 }
-                                saveSelectedList();
                               });
 
+                              dataStore.saveSelectedList(
+                                  dataStore.userSelectedStocksToNotify);
+
                               print("Selected Indexes in list: " +
-                                  userSelectedStocksToNotify.toString());
+                                  dataStore.userSelectedStocksToNotify
+                                      .toString());
                             },
                           );
                         },
@@ -246,11 +291,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ],
         ),
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: _incrementCounter,
-        //   tooltip: 'Increment',
-        //   child: Icon(Icons.add),
-        // ), // This trailing comma makes auto-formatting nicer for build methods.
       ),
     );
   }
