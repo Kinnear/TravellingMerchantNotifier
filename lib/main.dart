@@ -6,45 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:travellingmerchantnotifier/settings_layouts/settings_layout.dart';
 
-class DataStore with ChangeNotifier, DiagnosticableTreeMixin {
-  DataStore(this._userSelectedStocksToNotify) {
-    _futureStockItems.clear();
-
-    // Calculate the stock items for the next 7 days
-    for (int i = 0; i < 7; i++) {
-      DayStock futureDayStock = new DayStock();
-      _futureStockItems.add(
-        futureDayStock
-            .calculatedDayStock(DateTime.now().add(Duration(days: i))),
-      );
-    }
-  }
-
-  List<List<STOCK_ITEM>> _futureStockItems = [];
-  List<int> _userSelectedStocksToNotify = [];
-
-  List<List<STOCK_ITEM>> get futureStockItems => _futureStockItems;
-  List<int> get userSelectedStocksToNotify => _userSelectedStocksToNotify;
-
-  // void increment() {
-  //   notifyListeners();
-  // }
-
-  void saveSelectedList(List<int> integerList) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> stringList = integerList.map((e) => e.toString()).toList();
-
-    await prefs.setStringList('notifyOnStockList', stringList);
-  }
-
-  /// Makes `DataStore` readable inside the devtools by listing all of its properties
-  // @override
-  // void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  //   super.debugFillProperties(properties);
-  //   properties.add(IntProperty('count', count));
-  // }
-}
-
 Future<List<int>> loadSelectedList() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   List<String> notifyOnStockList =
@@ -222,73 +183,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
-            // SettingsLayout(),
-            Center(
-              child: Column(
-                children: [
-                  Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                    child: Row(
-                      children: [
-                        Text(
-                          "Select Stock to be notified on:",
-                          style: TextStyle(
-                            fontSize: 20.0,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Divider(),
-                  Scrollbar(
-                    child: SizedBox(
-                      height: 300.0,
-                      child: ListView.builder(
-                        physics: BouncingScrollPhysics(),
-                        itemCount: STOCK_ITEM.values.length,
-                        itemBuilder: (_, index) {
-                          return ListTile(
-                            selected: dataStore.userSelectedStocksToNotify
-                                .contains(index),
-                            selectedTileColor: Colors.green,
-                            title: Text(
-                              STOCK_ITEM.values[index].text,
-                              style: TextStyle(
-                                color: dataStore.userSelectedStocksToNotify
-                                        .contains(index)
-                                    ? Colors.white
-                                    : Colors.black,
-                              ),
-                            ),
-                            onTap: () {
-                              setState(() {
-                                if (dataStore.userSelectedStocksToNotify
-                                    .contains(index)) {
-                                  dataStore.userSelectedStocksToNotify
-                                      .removeWhere((val) => val == index);
-                                } else {
-                                  dataStore.userSelectedStocksToNotify
-                                      .add(index);
-                                }
-                              });
-
-                              dataStore.saveSelectedList(
-                                  dataStore.userSelectedStocksToNotify);
-
-                              print("Selected Indexes in list: " +
-                                  dataStore.userSelectedStocksToNotify
-                                      .toString());
-                            },
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                  Divider(),
-                ],
-              ),
-            ),
+            SettingsLayout(),
           ],
         ),
       ),

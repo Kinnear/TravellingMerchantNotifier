@@ -1,3 +1,45 @@
+import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class DataStore with ChangeNotifier, DiagnosticableTreeMixin {
+  DataStore(this._userSelectedStocksToNotify) {
+    _futureStockItems.clear();
+
+    // Calculate the stock items for the next 7 days
+    for (int i = 0; i < 7; i++) {
+      DayStock futureDayStock = new DayStock();
+      _futureStockItems.add(
+        futureDayStock
+            .calculatedDayStock(DateTime.now().add(Duration(days: i))),
+      );
+    }
+  }
+
+  List<List<STOCK_ITEM>> _futureStockItems = [];
+  List<int> _userSelectedStocksToNotify = [];
+
+  List<List<STOCK_ITEM>> get futureStockItems => _futureStockItems;
+  List<int> get userSelectedStocksToNotify => _userSelectedStocksToNotify;
+
+  // void increment() {
+  //   notifyListeners();
+  // }
+
+  void saveSelectedList(List<int> integerList) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> stringList = integerList.map((e) => e.toString()).toList();
+
+    await prefs.setStringList('notifyOnStockList', stringList);
+  }
+
+  /// Makes `DataStore` readable inside the devtools by listing all of its properties
+  // @override
+  // void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  //   super.debugFillProperties(properties);
+  //   properties.add(IntProperty('count', count));
+  // }
+}
+
 class SlotAandB {
   SlotAandB(
     this.stockA,
