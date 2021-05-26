@@ -34,49 +34,45 @@ class _StockChoiceLayoutState extends State<StockChoiceLayout> {
                 ),
               ),
               Divider(),
-              Scrollbar(
-                child: SizedBox(
-                  height: 300.0,
-                  child: ListView.builder(
-                    physics: BouncingScrollPhysics(),
-                    itemCount: STOCK_ITEM.values.length,
-                    itemBuilder: (_, index) {
-                      return ListTile(
-                        selected: dataStore.userSelectedStocksToNotify
-                            .contains(index),
-                        selectedTileColor: Colors.green,
-                        title: Text(
-                          STOCK_ITEM.values[index].text,
-                          style: TextStyle(
-                            color: dataStore.userSelectedStocksToNotify
-                                    .contains(index)
-                                ? Colors.white
-                                : Colors.black,
-                          ),
+              Expanded(
+                child: ListView.builder(
+                  physics: BouncingScrollPhysics(),
+                  itemCount: STOCK_ITEM.values.length,
+                  itemBuilder: (_, index) {
+                    return ListTile(
+                      selected:
+                          dataStore.userSelectedStocksToNotify.contains(index),
+                      selectedTileColor: Colors.green,
+                      title: Text(
+                        STOCK_ITEM.values[index].text,
+                        style: TextStyle(
+                          color: dataStore.userSelectedStocksToNotify
+                                  .contains(index)
+                              ? Colors.white
+                              : Colors.black,
                         ),
-                        onTap: () {
-                          setState(() {
-                            if (dataStore.userSelectedStocksToNotify
-                                .contains(index)) {
-                              dataStore.userSelectedStocksToNotify
-                                  .removeWhere((val) => val == index);
-                            } else {
-                              dataStore.userSelectedStocksToNotify.add(index);
-                            }
-                          });
+                      ),
+                      onTap: () {
+                        setState(() {
+                          if (dataStore.userSelectedStocksToNotify
+                              .contains(index)) {
+                            dataStore.userSelectedStocksToNotify
+                                .removeWhere((val) => val == index);
+                          } else {
+                            dataStore.userSelectedStocksToNotify.add(index);
+                          }
+                        });
 
-                          dataStore.saveSelectedList(
-                              dataStore.userSelectedStocksToNotify);
+                        dataStore.saveSelectedList(
+                            dataStore.userSelectedStocksToNotify);
 
-                          print("Selected Indexes in list: " +
-                              dataStore.userSelectedStocksToNotify.toString());
-                        },
-                      );
-                    },
-                  ),
+                        print("Selected Indexes in list: " +
+                            dataStore.userSelectedStocksToNotify.toString());
+                      },
+                    );
+                  },
                 ),
               ),
-              Divider(),
             ],
           ),
         ),
