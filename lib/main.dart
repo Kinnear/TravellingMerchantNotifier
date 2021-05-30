@@ -27,11 +27,11 @@ void main() async {
         create: (_) => DataStore(userSelectedStockList),
       )
     ],
-    child: MyApp(),
+    child: MainApp(),
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MainApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {

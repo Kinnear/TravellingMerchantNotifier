@@ -10,7 +10,7 @@ class DataStore with ChangeNotifier, DiagnosticableTreeMixin {
       DayStock futureDayStock = new DayStock();
       _futureStockItems.add(
         futureDayStock
-            .calculatedDayStock(DateTime.now().add(Duration(days: i))),
+            .calculatedDayStock(DateTime.now().toUtc().add(Duration(days: i))),
       );
     }
   }
@@ -595,77 +595,77 @@ class DayStock {
       SlotC(
         // 1
         1,
-        3,
-        STOCK_ITEM.DEATHTOUCHED_DART,
-      ),
-      SlotC(
-        2,
-        10,
-        STOCK_ITEM.UNFOCUSED_REWARD_ENHANCER,
-      ),
-      SlotC(
-        3,
-        5,
-        STOCK_ITEM.STARVED_ANCIENT_EFFIGY,
-      ),
-      SlotC(
-        4,
-        9,
-        STOCK_ITEM.MESSAGE_IN_A_BOTTLE,
-      ),
-      SlotC(
-        //5
-        5,
-        6,
-        STOCK_ITEM.LARGE_GOEBIE_BURIAL_CHARM,
-      ),
-      SlotC(
-        6,
-        13,
-        STOCK_ITEM.DISTRACTION_AND_DIVERSION_MONTHLY,
-      ),
-      SlotC(
-        7,
-        12,
-        STOCK_ITEM.HARMONIC_DUST,
-      ),
-      SlotC(
-        8,
-        2,
-        STOCK_ITEM.DISTRACTION_AND_DIVERSION_WEEKLY,
-      ),
-      SlotC(
-        9,
         1,
         STOCK_ITEM.DRAGONKIN_LAMP,
       ),
       SlotC(
-        //10
-        10,
+        2,
+        8,
+        STOCK_ITEM.TAIJU,
+      ),
+      SlotC(
+        3,
+        3,
+        STOCK_ITEM.DEATHTOUCHED_DART,
+      ),
+      SlotC(
         4,
-        STOCK_ITEM.MENAPHITE_GIFT_OFFERING_LARGE,
-      ),
-      SlotC(
-        11,
-        11,
-        STOCK_ITEM.DUNGEONEERING_WILDCARD,
-      ),
-      SlotC(
-        12,
         7,
         STOCK_ITEM.CRYSTAL_TRISKELION,
       ),
       SlotC(
-        13,
+        //5
+        5,
+        4,
+        STOCK_ITEM.MENAPHITE_GIFT_OFFERING_LARGE,
+      ),
+      SlotC(
+        6,
+        11,
+        STOCK_ITEM.DUNGEONEERING_WILDCARD,
+      ),
+      SlotC(
+        7,
+        10,
+        STOCK_ITEM.UNFOCUSED_REWARD_ENHANCER,
+      ),
+      SlotC(
         8,
-        STOCK_ITEM.TAIJU,
+        13,
+        STOCK_ITEM.DISTRACTION_AND_DIVERSION_MONTHLY,
+      ),
+      SlotC(
+        9,
+        12,
+        STOCK_ITEM.HARMONIC_DUST,
+      ),
+      SlotC(
+        //10
+        10,
+        2,
+        STOCK_ITEM.DISTRACTION_AND_DIVERSION_WEEKLY,
+      ),
+      SlotC(
+        11,
+        9,
+        STOCK_ITEM.MESSAGE_IN_A_BOTTLE,
+      ),
+      SlotC(
+        12,
+        5,
+        STOCK_ITEM.STARVED_ANCIENT_EFFIGY,
+      ),
+      SlotC(
+        13,
+        6,
+        STOCK_ITEM.LARGE_GOEBIE_BURIAL_CHARM,
       ),
     ];
 
     return list;
   }
 
-  List<int> slotCDefaultItemOrder() {
+  List<int> slotCFixedFortyDayRotation() {
     return [
       1,
       1,
@@ -711,53 +711,77 @@ class DayStock {
   }
 
   List<STOCK_ITEM> calculatedDayStock(DateTime calculateForDate) {
-// Calculate Slot A and B index
+    // Calculate Slot A and B index
     slotAandBList = populateSlotAandBPattern();
     int dateDifferenceInDaysSlotAAndB =
-        calculateForDate.difference(DateTime(2018, 03, 11)).inDays;
+        calculateForDate.difference(DateTime.utc(2018, 03, 11)).inDays;
     int slotAandBIndex = dateDifferenceInDaysSlotAAndB % 120;
     todaySlotAandB = slotAandBList[slotAandBIndex];
 
-    print("Today's Slot A and B:" + todaySlotAandB.toString());
+    // print("Today's Slot A and B:" + todaySlotAandB.toString());
 
     // Calculate Slot C index
     // Number of 40-day periods elapsed since 11 March 2018
-    int amountOf40RotationDays = (calculateForDate
-                .toUtc()
-                .difference(DateTime(2018, 03, 11).toUtc())
-                .inDays /
-            40)
-        .floor();
+    int amountOf40RotationDays =
+        (calculateForDate.difference(DateTime.utc(2018, 03, 11)).inDays / 40)
+            .floor();
 
     // Number of days elapsed since start of current 40-day cycle
     int elapsedDaysIn40DayCycle =
-        calculateForDate.difference(DateTime(2018, 03, 11).toUtc()).inDays % 40;
+        calculateForDate.difference(DateTime.utc(2018, 03, 11)).inDays % 40;
 
-    elapsedDaysIn40DayCycle++;
+    // print("Current Rotation: " + amountOf40RotationDays.toString());
 
-    print("Current Rotation: " + amountOf40RotationDays.toString());
-    print("Elapsed Days in current Rotation: " +
-        elapsedDaysIn40DayCycle.toString());
+    // print("Elapsed Days in current Rotation: " +
+    //     elapsedDaysIn40DayCycle.toString());
 
-    // get the ID of the current item5
-    // int currentItemID = slotCDefaultItemOrder()[elapsedDaysIn40DayCycle];
+    // get the ID of the current item
+    int itemOrderID = slotCFixedFortyDayRotation()[elapsedDaysIn40DayCycle];
+
+    // print("itemOrderID: " + itemOrderID.toString());
     //map the current item id to the item order id
-    // int itemMapID = populateSlotCPattern()[currentItemID].itemMapID;
-    // move mapped ID to current rotation
-    // int todayItemID = (itemMapID + amountOf40RotationDays % 13);
-    // todaySlotC = populateSlotCPattern()[todayItemID];
 
-    // Temporary
-    todaySlotC = SlotC(
-      1,
-      3,
-      STOCK_ITEM.DEATHTOUCHED_DART,
+    int itemMapID;
+
+    populateSlotCPattern().asMap().forEach(
+      (index, element) {
+        if (element.itemOrderID == itemOrderID) {
+          itemMapID = element.itemMapID;
+        }
+      },
     );
+
+    // print("itemMapID: " + itemMapID.toString());
+
+    // move mapped ID to current rotation
+    int todayMapID = ((itemMapID + amountOf40RotationDays) % 13);
+    // print("todayMapID: " + todayMapID.toString());
+
+    if (todayMapID == 0) {
+      // pass in 13
+      populateSlotCPattern().asMap().forEach(
+        (index, element) {
+          if (element.itemMapID == 13) {
+            todaySlotC = element;
+          }
+        },
+      );
+    } else {
+      // pass in the original value
+      populateSlotCPattern().asMap().forEach(
+        (index, element) {
+          if (element.itemMapID == todayMapID) {
+            todaySlotC = element;
+          }
+        },
+      );
+    }
+    // print("todaySlotC: " + todaySlotC.itemMapName.toString());
 
     dayStock.clear();
     dayStock.add(todaySlotAandB.stockA);
     dayStock.add(todaySlotAandB.stockB);
-    dayStock.add(STOCK_ITEM.TAIJU); //  Temporary only
+    dayStock.add(todaySlotC.itemMapName);
     return dayStock;
   }
 }
