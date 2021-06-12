@@ -19,15 +19,14 @@ class DataStore with ChangeNotifier, DiagnosticableTreeMixin {
   List<int> _userSelectedStocksToNotify = [];
 
   List<List<STOCK_ITEM>> get futureStockItems => _futureStockItems;
-  List<int> get userSelectedStocksToNotify => _userSelectedStocksToNotify;
-
-  // void increment() {
-  //   notifyListeners();
-  // }
+  List<int> get userSelectedStocksToNotify {
+    return _userSelectedStocksToNotify;
+  }
 
   void saveSelectedList(List<int> integerList) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> stringList = integerList.map((e) => e.toString()).toList();
+    notifyListeners();
 
     await prefs.setStringList('notifyOnStockList', stringList);
   }
