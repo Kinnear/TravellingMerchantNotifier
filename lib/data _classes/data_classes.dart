@@ -824,16 +824,76 @@ enum STOCK_ITEM {
 }
 
 extension STOCK_ITEM_Extension on STOCK_ITEM {
-  // String get imageURL {
-  //   switch (this) {
-  //     case STOCK_ITEM.BARREL_OF_BAIT:
-  //       return "barrel_of_bait";
-  //     case STOCK_ITEM.TANGLED_FISHBOWL:
-  //       return "";
-  //     default:
-  //       return null;
-  //   }
-  // }
+  String get imageURL {
+    switch (this) {
+      case STOCK_ITEM.BARREL_OF_BAIT:
+        return "barrel_of_bait.png";
+      case STOCK_ITEM.TANGLED_FISHBOWL:
+        return "tangled_fishbowl.png";
+      case STOCK_ITEM.BROKEN_FISHING_ROD:
+        return "Broken_fishing_rod.png";
+      case STOCK_ITEM.SMALL_GOEBIE_BURIAL_CHARM:
+        return "Small_goebie_burial_charm.png";
+      case STOCK_ITEM.GOEBIE_BURIAL_CHARM:
+        return "Goebie_burial_charm.png";
+      case STOCK_ITEM.MENAPHITE_GIFT_OFFERING_SMALL:
+        return "Menaphite_gift_offering_(small).png";
+      case STOCK_ITEM.MENAPHITE_GIFT_OFFERING_MEDIUM:
+        return "Menaphite_gift_offering_(medium).png";
+      case STOCK_ITEM.UNSTABLE_AIR_RUNE:
+        return "Unstable_air_rune.png";
+      case STOCK_ITEM.ANIMA_CRYSTAL:
+        return "Anima_crystal.png";
+      case STOCK_ITEM.SLAYER_VIP_COUPON:
+        return "Slayer_VIP_Coupon.png";
+      case STOCK_ITEM.DISTRACTION_AND_DIVERSION_DAILY:
+        return "D&D_token_(daily).png";
+      case STOCK_ITEM.UNFOCUSED_DAMAGE_ENHANCER:
+        return "Unfocused_damage_enhancer.png";
+      case STOCK_ITEM.SACRED_CLAY:
+        return "Sacred_clay.png";
+      case STOCK_ITEM.SHATTERED_ANIMA:
+        return "Shattered_anima.png";
+      case STOCK_ITEM.ADVANCED_PULSE_CORE:
+        return "Advanced_pulse_core.png";
+      case STOCK_ITEM.LIVID_PLANT:
+        return "Livid_plant.png";
+      case STOCK_ITEM.GIFT_FOR_THE_REAPER:
+        return "Gift_for_the_Reaper.png";
+      case STOCK_ITEM.SILVERHAWK_DOWN:
+        return "Silverhawk_down.png";
+
+      //Slot C Items
+      case STOCK_ITEM.DEATHTOUCHED_DART:
+        return "Deathtouched_dart.png";
+      case STOCK_ITEM.UNFOCUSED_REWARD_ENHANCER:
+        return "Unfocused_reward_enhancer.png";
+      case STOCK_ITEM.STARVED_ANCIENT_EFFIGY:
+        return "Starved_ancient_effigy.png";
+      case STOCK_ITEM.MESSAGE_IN_A_BOTTLE:
+        return "Message_in_a_bottle.png";
+      case STOCK_ITEM.LARGE_GOEBIE_BURIAL_CHARM:
+        return "Large_goebie_burial_charm.png";
+      case STOCK_ITEM.DISTRACTION_AND_DIVERSION_MONTHLY:
+        return "D&D_token_(monthly).png";
+      case STOCK_ITEM.HARMONIC_DUST:
+        return "Harmonic_dust.png";
+      case STOCK_ITEM.DISTRACTION_AND_DIVERSION_WEEKLY:
+        return "D&D_token_(weekly).png";
+      case STOCK_ITEM.DRAGONKIN_LAMP:
+        return "Dragonkin_lamp.png";
+      case STOCK_ITEM.MENAPHITE_GIFT_OFFERING_LARGE:
+        return "Menaphite_gift_offering_(large).png";
+      case STOCK_ITEM.DUNGEONEERING_WILDCARD:
+        return "Dungeoneering_Wildcard.png";
+      case STOCK_ITEM.CRYSTAL_TRISKELION:
+        return "Crystal_triskelion.png";
+      case STOCK_ITEM.TAIJU:
+        return "Taijitu.png";
+      default:
+        return null;
+    }
+  }
 
   String get text {
     switch (this) {
@@ -858,7 +918,7 @@ extension STOCK_ITEM_Extension on STOCK_ITEM {
       case STOCK_ITEM.SLAYER_VIP_COUPON:
         return "Slayer VIP Coupon";
       case STOCK_ITEM.DISTRACTION_AND_DIVERSION_DAILY:
-        return "Distraction_And_Diversion_Daily";
+        return "Distraction & Diversion (Daily)";
       case STOCK_ITEM.UNFOCUSED_DAMAGE_ENHANCER:
         return "Unfocused Damage Enhancer";
       case STOCK_ITEM.SACRED_CLAY:

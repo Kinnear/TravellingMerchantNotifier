@@ -76,6 +76,10 @@ class _MyHomePageState extends State<MyHomePage> {
         .format(DateTime.now().add(Duration(days: daysInTheFuture)));
   }
 
+  // bool highlightUserChosenStock(List<STOCK_ITEM> ) {
+  //   return false;
+  // }
+
   List<DataRow> buildDatatable(List<List<STOCK_ITEM>> futureStockItems) {
     return [
       for (int i = 0; i < futureStockItems.length; i++) ...[
@@ -91,30 +95,63 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             )),
             DataCell(
-              Text(
-                futureStockItems[i][0].text,
-                style: TextStyle(
-                  fontSize: 10.0,
-                  color: i == 0 ? Colors.white : Colors.black,
+              Chip(
+                labelPadding: EdgeInsets.all(2.0),
+                avatar: CircleAvatar(
+                  backgroundColor: Colors.white70,
+                  child: Image.asset('assets/images/stock_items/' +
+                      futureStockItems[i][0].imageURL),
                 ),
+                label: Text(
+                  futureStockItems[i][0].text,
+                  style: TextStyle(
+                    color: i == 0 ? Colors.white : Colors.white,
+                  ),
+                ),
+                backgroundColor: i == 0 ? Colors.blue : Colors.black,
+                elevation: 6.0,
+                shadowColor: Colors.grey[60],
+                padding: EdgeInsets.all(8.0),
               ),
             ),
             DataCell(
-              Text(
-                futureStockItems[i][1].text,
-                style: TextStyle(
-                  fontSize: 10.0,
-                  color: i == 0 ? Colors.white : Colors.black,
+              Chip(
+                labelPadding: EdgeInsets.all(2.0),
+                avatar: CircleAvatar(
+                  backgroundColor: Colors.white70,
+                  child: Image.asset('assets/images/stock_items/' +
+                      futureStockItems[i][1].imageURL),
                 ),
+                label: Text(
+                  futureStockItems[i][1].text,
+                  style: TextStyle(
+                    color: i == 0 ? Colors.white : Colors.white,
+                  ),
+                ),
+                backgroundColor: i == 0 ? Colors.blue : Colors.black,
+                elevation: 6.0,
+                shadowColor: Colors.grey[60],
+                padding: EdgeInsets.all(8.0),
               ),
             ),
             DataCell(
-              Text(
-                futureStockItems[i][2].text,
-                style: TextStyle(
-                  fontSize: 10.0,
-                  color: i == 0 ? Colors.white : Colors.black,
+              Chip(
+                labelPadding: EdgeInsets.all(2.0),
+                avatar: CircleAvatar(
+                  backgroundColor: Colors.white70,
+                  child: Image.asset('assets/images/stock_items/' +
+                      futureStockItems[i][2].imageURL),
                 ),
+                label: Text(
+                  futureStockItems[i][2].text,
+                  style: TextStyle(
+                    color: i == 0 ? Colors.white : Colors.white,
+                  ),
+                ),
+                backgroundColor: i == 0 ? Colors.blue : Colors.black,
+                elevation: 6.0,
+                shadowColor: Colors.grey[60],
+                padding: EdgeInsets.all(8.0),
               ),
             ),
           ],
