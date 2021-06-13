@@ -828,7 +828,7 @@ extension STOCK_ITEM_Extension on STOCK_ITEM {
       case STOCK_ITEM.BARREL_OF_BAIT:
         return "barrel_of_bait.png";
       case STOCK_ITEM.TANGLED_FISHBOWL:
-        return "tangled_fishbowl.png";
+        return "Tangled_fishbowl.png";
       case STOCK_ITEM.BROKEN_FISHING_ROD:
         return "Broken_fishing_rod.png";
       case STOCK_ITEM.SMALL_GOEBIE_BURIAL_CHARM:

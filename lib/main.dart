@@ -103,14 +103,12 @@ class _MyHomePageState extends State<MyHomePage> {
     return [
       for (int i = 0; i < futureStockItems.length; i++) ...[
         DataRow(
-          color: i == 0
-              ? MaterialStateProperty.all(Colors.green)
-              : MaterialStateProperty.all(Colors.transparent),
+          color: MaterialStateProperty.all(Colors.transparent),
           cells: [
             DataCell(Text(
               i == 0 ? 'Today:' : dateDisplay(i),
               style: TextStyle(
-                color: i == 0 ? Colors.white : Colors.black,
+                color: Colors.black,
               ),
             )),
             DataCell(
@@ -124,14 +122,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 label: Text(
                   futureStockItems[i][0].text,
                   style: TextStyle(
-                    color: i == 0 ? Colors.white : Colors.white,
+                    color: highlightUserChosenStock(
+                            futureStockItems[i][0], userPreferredStockList)
+                        ? Colors.black
+                        : Colors.white,
                   ),
                 ),
-                // backgroundColor: i == 0 ? Colors.blue : Colors.black,
                 backgroundColor: highlightUserChosenStock(
                         futureStockItems[i][0], userPreferredStockList)
                     ? Colors.blue
-                    : Colors.black,
+                    : Colors.black54,
                 elevation: 6.0,
                 shadowColor: Colors.grey[60],
                 padding: EdgeInsets.all(8.0),
@@ -148,14 +148,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 label: Text(
                   futureStockItems[i][1].text,
                   style: TextStyle(
-                    color: i == 0 ? Colors.white : Colors.white,
+                    color: highlightUserChosenStock(
+                            futureStockItems[i][1], userPreferredStockList)
+                        ? Colors.black
+                        : Colors.white,
                   ),
                 ),
-                // backgroundColor: i == 0 ? Colors.blue : Colors.black,
                 backgroundColor: highlightUserChosenStock(
                         futureStockItems[i][1], userPreferredStockList)
                     ? Colors.blue
-                    : Colors.black,
+                    : Colors.black54,
                 elevation: 6.0,
                 shadowColor: Colors.grey[60],
                 padding: EdgeInsets.all(8.0),
@@ -172,14 +174,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 label: Text(
                   futureStockItems[i][2].text,
                   style: TextStyle(
-                    color: i == 0 ? Colors.white : Colors.white,
+                    color: highlightUserChosenStock(
+                            futureStockItems[i][2], userPreferredStockList)
+                        ? Colors.black
+                        : Colors.white,
                   ),
                 ),
-                // backgroundColor: i == 0 ? Colors.blue : Colors.black,
                 backgroundColor: highlightUserChosenStock(
                         futureStockItems[i][2], userPreferredStockList)
                     ? Colors.blue
-                    : Colors.black,
+                    : Colors.black54,
                 elevation: 6.0,
                 shadowColor: Colors.grey[60],
                 padding: EdgeInsets.all(8.0),
