@@ -124,7 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: TextStyle(
                     color: highlightUserChosenStock(
                             futureStockItems[i][0], userPreferredStockList)
-                        ? Colors.black
+                        ? Colors.white
                         : Colors.white,
                   ),
                 ),
@@ -150,7 +150,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: TextStyle(
                     color: highlightUserChosenStock(
                             futureStockItems[i][1], userPreferredStockList)
-                        ? Colors.black
+                        ? Colors.white
                         : Colors.white,
                   ),
                 ),
@@ -176,7 +176,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: TextStyle(
                     color: highlightUserChosenStock(
                             futureStockItems[i][2], userPreferredStockList)
-                        ? Colors.black
+                        ? Colors.white
                         : Colors.white,
                   ),
                 ),
