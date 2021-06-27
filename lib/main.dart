@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 import 'package:travellingmerchantnotifier/data%20_classes/data_classes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -55,9 +56,20 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  FlutterLocalNotificationsPlugin localNotification;
+
   @override
   void initState() {
     super.initState();
+
+    var androidInitialize = new AndroidInitializationSettings('ic_launcher');
+    var iOSInitialize = new IOSInitializationSettings();
+
+    var initializationSettings = new InitializationSettings(
+        android: androidInitialize, iOS: iOSInitialize);
+
+    localNotification = new FlutterLocalNotificationsPlugin();
+    localNotification.initialize(initializationSettings);
   }
 
   Future<List<int>> loadSelectedList() async {
@@ -195,6 +207,22 @@ class _MyHomePageState extends State<MyHomePage> {
     ];
   }
 
+  Future _showStockNotification(String notificationBody) async {
+    var androidDetails = new AndroidNotificationDetails(
+      "channelId",
+      "Local Notification",
+      "This is the description of the notification",
+      importance: Importance.high,
+    );
+
+    var iosDetails = new IOSNotificationDetails();
+    var generalNotificationDetails =
+        new NotificationDetails(android: androidDetails, iOS: iosDetails);
+
+    await localNotification.show(0, "Visit Travelling Merchant",
+        notificationBody, generalNotificationDetails);
+  }
+
   @override
   Widget build(BuildContext context) {
     final dataStore = context.watch<DataStore>();
@@ -258,6 +286,16 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             SettingsLayout(),
           ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            print("Pressed the floating action notification button");
+            _showStockNotification(
+                "Gift of the Reaper and Anima Crystal are on");
+          },
+          child: Icon(
+            Icons.notifications,
+          ),
         ),
       ),
     );
