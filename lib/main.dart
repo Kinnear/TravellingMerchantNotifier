@@ -291,7 +291,7 @@ class _MyHomePageState extends State<MyHomePage> {
           onPressed: () {
             print("Pressed the floating action notification button");
             _showStockNotification(
-                "Gift of the Reaper and Anima Crystal are on");
+                "Items: Gift of the Reaper and Anima Crystal are on");
           },
           child: Icon(
             Icons.notifications,
