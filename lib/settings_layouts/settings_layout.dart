@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:settings_ui/settings_ui.dart';
+// import 'package:settings_ui/settings_ui.dart';
+import 'package:flutter_settings_ui/flutter_settings_ui.dart';
 import 'package:travellingmerchantnotifier/settings_layouts/stock_choice_layout.dart';
 
 class SettingsLayout extends StatefulWidget {

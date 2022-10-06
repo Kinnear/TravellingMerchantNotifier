@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
+// import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 import 'package:travellingmerchantnotifier/data%20_classes/data_classes.dart';
@@ -63,13 +63,17 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
 
     var androidInitialize = new AndroidInitializationSettings('ic_launcher');
-    var iOSInitialize = new IOSInitializationSettings();
+    var iOSInitialize = new DarwinInitializationSettings();
 
     var initializationSettings = new InitializationSettings(
         android: androidInitialize, iOS: iOSInitialize);
 
     localNotification = new FlutterLocalNotificationsPlugin();
     localNotification.initialize(initializationSettings);
+
+    // For android 13 and above permission request
+    localNotification.resolvePlatformSpecificImplementation<
+    AndroidFlutterLocalNotificationsPlugin>().requestPermission();
   }
 
   Future<List<int>> loadSelectedList() async {
@@ -210,12 +214,12 @@ class _MyHomePageState extends State<MyHomePage> {
   Future _showStockNotification(String notificationBody) async {
     var androidDetails = new AndroidNotificationDetails(
       "channelId",
-      "Local Notification",
-      "This is the description of the notification",
-      importance: Importance.high,
+      "Local Notification", 
+      channelDescription: "This is the description of the notification",
+      importance: Importance.high
     );
 
-    var iosDetails = new IOSNotificationDetails();
+    var iosDetails = new DarwinNotificationDetails();
     var generalNotificationDetails =
         new NotificationDetails(android: androidDetails, iOS: iosDetails);
 
