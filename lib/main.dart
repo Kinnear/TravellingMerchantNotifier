@@ -48,7 +48,7 @@ class MainApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
@@ -56,7 +56,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  FlutterLocalNotificationsPlugin localNotification;
+  late FlutterLocalNotificationsPlugin localNotification;
 
   @override
   void initState() {
@@ -73,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     // For android 13 and above permission request
     localNotification.resolvePlatformSpecificImplementation<
-    AndroidFlutterLocalNotificationsPlugin>().requestPermission();
+    AndroidFlutterLocalNotificationsPlugin>()?.requestPermission();
   }
 
   Future<List<int>> loadSelectedList() async {

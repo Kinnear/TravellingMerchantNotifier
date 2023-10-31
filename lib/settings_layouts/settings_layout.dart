@@ -4,7 +4,7 @@ import 'package:flutter_settings_ui/flutter_settings_ui.dart';
 import 'package:travellingmerchantnotifier/settings_layouts/stock_choice_layout.dart';
 
 class SettingsLayout extends StatefulWidget {
-  SettingsLayout({Key key}) : super(key: key);
+  SettingsLayout({Key? key}) : super(key: key);
 
   @override
   _SettingsLayoutState createState() => _SettingsLayoutState();

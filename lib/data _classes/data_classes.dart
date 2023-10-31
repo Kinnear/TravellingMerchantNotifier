@@ -65,17 +65,17 @@ class SlotC {
 }
 
 class DayStock {
-  DateTime date;
-  SlotAandB slotAandB;
-  SlotC slotC;
+  late DateTime date;
+  late SlotAandB slotAandB;
+  late SlotC slotC;
 
   List<STOCK_ITEM> dayStock = [];
 
   List<SlotAandB> slotAandBList = [];
-  SlotAandB todaySlotAandB;
+  late SlotAandB todaySlotAandB;
 
   List<SlotC> slotCOrderList = <SlotC>[];
-  SlotC todaySlotC;
+  late SlotC todaySlotC;
 
   List<SlotAandB> populateSlotAandBPattern() {
     List<SlotAandB> list = [
@@ -740,7 +740,7 @@ class DayStock {
     // print("itemOrderID: " + itemOrderID.toString());
     //map the current item id to the item order id
 
-    int itemMapID;
+    late int itemMapID;
 
     populateSlotCPattern().asMap().forEach(
       (index, element) {
@@ -890,7 +890,7 @@ extension STOCK_ITEM_Extension on STOCK_ITEM {
       case STOCK_ITEM.TAIJU:
         return "Taijitu.png";
       default:
-        return null;
+        return '';
     }
   }
 
@@ -961,7 +961,7 @@ extension STOCK_ITEM_Extension on STOCK_ITEM {
       case STOCK_ITEM.TAIJU:
         return "Taiju";
       default:
-        return null;
+        return '';
     }
   }
 }

@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:travellingmerchantnotifier/data%20_classes/data_classes.dart';
 
 class StockChoiceLayout extends StatefulWidget {
-  StockChoiceLayout({Key key}) : super(key: key);
+  StockChoiceLayout({Key? key}) : super(key: key);
 
   @override
   _StockChoiceLayoutState createState() => _StockChoiceLayoutState();
